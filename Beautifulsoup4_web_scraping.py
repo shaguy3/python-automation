@@ -1,7 +1,5 @@
-from bs4 import BeautifulSoup
-import lxml
-import html5lib
 import requests
+from bs4 import BeautifulSoup
 
 test_url = 'https://www.skidrowreloaded.com/'
 source = requests.get(test_url).text
