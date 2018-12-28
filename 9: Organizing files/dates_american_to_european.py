@@ -1,6 +1,24 @@
 import re
 import os
 
+
+def swap_date(string, regex):
+    match_object = regex.search(string)
+    if match_object is None:
+        return string
+    else:
+        if match_object.group(4) == '/':
+            before, month, blank1, separator1, day, separator2, blank2, blank3, blank4, blank5, blank6, blank7, year, \
+                after = match_object.groups()
+        elif match_object.group(7) == '.':
+            before, month, blank1, blank2, blank3, blank4, separator1, day, separator2, blank5, blank6, blank7, year, \
+                after = match_object.groups()
+        else:
+            before, month, blank1, blank2, blank3, blank4, blank5, blank6, blank7, separator1, day, separator2, year, \
+                after = match_object.groups()
+        return before + day + separator1 + month + separator2 + year + swap_date(after, regex)
+
+
 american_regex = re.compile(r'''
                             (.*?)
                             (0?[1-9]|1[0-2])                              #Month
@@ -11,26 +29,13 @@ american_regex = re.compile(r'''
                             (.*)
                             ''', re.VERBOSE | re.DOTALL)
 
-# TODO: Loop over the files in the working directory
 parent_folder = os.getcwd() + '/American Dates'
 for folder_name, sub_folders, file_names in os.walk(parent_folder):
     for file_name in file_names:
-        print('found file: ' + file_name)
-        # TODO: skip files without a date
         current_file = open(folder_name + '/' + file_name, 'r')
         contents = current_file.read()
-        #print(american_regex.findall(contents))
-        if american_regex.search(contents) is not None:
-            # TODO: Get the different parts of the filename
-            for date in american_regex.findall(contents):
-                before = date[0]
-                month = date[1]
-                separator_1 = date[5]
-                day = date[6]
-                separator_2 = date[7]
-                year = date[11]
-                after = date[12]
-                print(before + day + separator_1 + month + separator_2 + year + after)
-        current_file.close()
-
-    # TODO: Rename the files
+        after_swap = swap_date(contents, american_regex)
+        os.chdir('/home/guy/PycharmProjects/python-automation/9: Organizing files/European dates')
+        new_file = open(os.path.splitext(file_name)[0] + '_Euro.txt', 'w')
+        new_file.write(swap_date(contents, american_regex))
+        new_file.close()
