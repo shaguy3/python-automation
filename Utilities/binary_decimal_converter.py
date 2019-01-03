@@ -1,4 +1,4 @@
-def convert_d_b(decimal):
+def decimal_to_binary(decimal):
     binary = 0
     counter = 0
     if decimal == 0:
@@ -14,7 +14,7 @@ def convert_d_b(decimal):
     return binary
 
 
-def convert_b_d(binary):
+def binary_to_decimal(binary):
     if binary == 0:
         return 0
     if binary == 1:
