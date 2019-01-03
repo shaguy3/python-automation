@@ -1,13 +1,6 @@
 import bs4
 import requests
 import webbrowser
-import lxml
-
-# TODO: Open google website
-
-# TODO: Search the requested input
-
-# TODO: Open the first five links of the search in the browser
 
 search = input('What would you like to search? ')
 search = search.replace(' ', '+')
@@ -20,6 +13,9 @@ res.raise_for_status()
 soup = bs4.BeautifulSoup(res.text, features='lxml')
 # Made a beautifulSoup object with the module
 
-links = soup.select('.r a')
+links_html = soup.select('.r a')
+# Selected all of the search links of the response
 
-print(links)
+for link_html in links_html:
+    webbrowser.open('https://www.google.com/' + link_html.get('href'))
+    # Opened a tab with each of the searches.
