@@ -9,4 +9,3 @@ try:
     browser.find_elements_by_class_name('LC20lb')[1].click()
 except Exception as err:
     print(err)
-
